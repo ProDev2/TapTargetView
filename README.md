@@ -15,13 +15,13 @@
 ## Installation
 
 ```groovy
-   repositories { 
+    repositories { 
         maven { url 'https://jitpack.io' }
-   }
-   
-   dependencies {
-         
-   }
+    }
+    
+    dependencies {
+        implementation 'com.github.ProDev2:TapTargetView:1.14.0'
+    }
 ```
 
 ## Usage
