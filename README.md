@@ -9,7 +9,7 @@
 # TapTargetView
 
 ## Important
-**I am not the owner of this project. To optain the original library, please click the link below:**
+**I am not the owner of this project. To optain the original library, please click the link below:**\
 [TapTargetView library](https://github.com/KeepSafe/TapTargetView)
 
 ## Installation
