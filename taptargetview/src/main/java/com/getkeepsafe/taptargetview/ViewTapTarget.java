@@ -15,45 +15,134 @@
  */
 package com.getkeepsafe.taptargetview;
 
+import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
-import androidx.annotation.Nullable;
 import android.view.View;
 
-class ViewTapTarget extends TapTarget {
-  final View view;
+import androidx.annotation.IdRes;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
-  ViewTapTarget(View view, CharSequence title, @Nullable CharSequence description) {
-    super(title, description);
-    if (view == null) {
-      throw new IllegalArgumentException("Given null view to target");
+public class ViewTapTarget extends TapTarget {
+    private final View view;
+
+    public ViewTapTarget(@NonNull View view, CharSequence title, @Nullable CharSequence description) {
+        super(title, description);
+
+        if (view == null)
+            throw new NullPointerException("View cannot be null");
+
+        this.view = view;
     }
-    this.view = view;
-  }
 
-  @Override
-  public void onReady(final Runnable runnable) {
-    ViewUtil.onLaidOut(view, new Runnable() {
-      @Override
-      public void run() {
-        // Cache bounds
-        final int[] location = new int[2];
-        view.getLocationOnScreen(location);
-        bounds = new Rect(location[0], location[1],
-            location[0] + view.getWidth(), location[1] + view.getHeight());
+    public ViewTapTarget(@NonNull View parentView, @IdRes int viewId, CharSequence title, @Nullable CharSequence description) {
+        super(title, description);
 
-        if (icon == null && view.getWidth() > 0 && view.getHeight() > 0) {
-          final Bitmap viewBitmap = Bitmap.createBitmap(view.getWidth(), view.getHeight(), Bitmap.Config.ARGB_8888);
-          final Canvas canvas = new Canvas(viewBitmap);
-          view.draw(canvas);
-          icon = new BitmapDrawable(view.getContext().getResources(), viewBitmap);
-          icon.setBounds(0, 0, icon.getIntrinsicWidth(), icon.getIntrinsicHeight());
+        if (parentView == null)
+            throw new NullPointerException("Parent view cannot be null");
+
+        View view = parentView.findViewById(viewId);
+        if (view == null)
+            throw new IllegalArgumentException("View not found");
+
+        this.view = view;
+    }
+
+    public ViewTapTarget(@NonNull Activity activity, @IdRes int viewId, CharSequence title, @Nullable CharSequence description) {
+        super(title, description);
+
+        if (activity == null)
+            throw new NullPointerException("Activity cannot be null");
+
+        View view = activity.findViewById(viewId);
+        if (view == null)
+            throw new IllegalArgumentException("View not found");
+
+        this.view = view;
+    }
+
+    public ViewTapTarget(@NonNull View parentView, @IdRes int[] viewIds, CharSequence title, @Nullable CharSequence description) {
+        super(title, description);
+
+        if (parentView == null)
+            throw new NullPointerException("Parent view cannot be null");
+
+        View view = null;
+        if (viewIds != null) {
+            for (int viewId : viewIds) {
+                if (viewId == View.NO_ID)
+                    continue;
+
+                try {
+                    view = parentView.findViewById(viewId);
+                } catch (Exception e) {
+                    view = null;
+                }
+
+                if (view != null)
+                    break;
+            }
         }
+        if (view == null)
+            throw new IllegalArgumentException("View not found");
 
-        runnable.run();
-      }
-    });
-  }
+        this.view = view;
+    }
+
+    public ViewTapTarget(@NonNull Activity activity, @IdRes int[] viewIds, CharSequence title, @Nullable CharSequence description) {
+        super(title, description);
+
+        if (activity == null)
+            throw new NullPointerException("Activity cannot be null");
+
+        View view = null;
+        if (viewIds != null) {
+            for (int viewId : viewIds) {
+                if (viewId == View.NO_ID)
+                    continue;
+
+                try {
+                    view = activity.findViewById(viewId);
+                } catch (Exception e) {
+                    view = null;
+                }
+
+                if (view != null)
+                    break;
+            }
+        }
+        if (view == null)
+            throw new IllegalArgumentException("View not found");
+
+        this.view = view;
+    }
+
+    @Override
+    public void onReady(final Runnable runnable) {
+        ViewUtil.onLaidOut(view, new Runnable() {
+            @Override
+            public void run() {
+                // Cache bounds
+                final int[] location = new int[2];
+                view.getLocationOnScreen(location);
+                bounds = new Rect(location[0],
+                        location[1],
+                        location[0] + view.getWidth(),
+                        location[1] + view.getHeight());
+
+                if (icon == null && view.getWidth() > 0 && view.getHeight() > 0) {
+                    final Bitmap viewBitmap = Bitmap.createBitmap(view.getWidth(), view.getHeight(), Bitmap.Config.ARGB_8888);
+                    final Canvas canvas = new Canvas(viewBitmap);
+                    view.draw(canvas);
+                    icon = new BitmapDrawable(view.getContext().getResources(), viewBitmap);
+                    icon.setBounds(0, 0, icon.getIntrinsicWidth(), icon.getIntrinsicHeight());
+                }
+
+                runnable.run();
+            }
+        });
+    }
 }
