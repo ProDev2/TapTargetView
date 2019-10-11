@@ -7,6 +7,8 @@
 </h1>
 
 # TapTargetView
+
+## Important
 **I am not the owner of this project. To optain the original library, please click the link below:**
 [TapTargetView library](https://github.com/KeepSafe/TapTargetView)
 
@@ -21,8 +23,6 @@
          
    }
 ```
-
-If you wish to use a snapshot, please follow the instructions [here](https://jitpack.io/#KeepSafe/TapTargetView/-SNAPSHOT)
 
 ## Usage
 
