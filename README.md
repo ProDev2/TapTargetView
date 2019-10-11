@@ -6,24 +6,19 @@
     TapTargetView
 </h1>
 
-[![Download](https://api.bintray.com/packages/keepsafesoftware/Android/TapTargetView/images/download.svg) ](https://bintray.com/keepsafesoftware/Android/TapTargetView/_latestVersion)
-
-
-An implementation of tap targets from [Google's Material Design guidelines on feature discovery](https://material.io/archive/guidelines/growth-communications/feature-discovery.html).
-
-**Min SDK:** 14
+# TapTargetView
+**I am not the owner of this project. To optain the original library, please click the link below:**
+[TapTargetView library](https://github.com/KeepSafe/TapTargetView)
 
 ## Installation
 
-TapTargetView is distributed using [jcenter](https://bintray.com/keepsafesoftware/Android/TapTargetView/view).
-
 ```groovy
    repositories { 
-        jcenter()
+        maven { url 'https://jitpack.io' }
    }
    
    dependencies {
-         implementation 'com.getkeepsafe.taptargetview:taptargetview:1.13.0'
+         
    }
 ```
 
